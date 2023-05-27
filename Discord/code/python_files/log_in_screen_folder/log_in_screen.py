@@ -3,7 +3,7 @@ import pygame, pygame_gui, json
 from typing import Sequence, List
 
 # Custom-made libraries
-from settings import *
+from app_engine.settings import *
 
 class LogIn:
     def __init__(self, manager: pygame_gui.ui_manager.UIManager, background_path: str):
@@ -11,6 +11,15 @@ class LogIn:
         self.display_surface = pygame.display.get_surface()
 
         font_name = "bahnschrift"
+        font_sizes = {
+            "big_font": 40,
+            "normal_font": 30,
+            "intermediate_font": 25,
+            "medium_font": 20,
+            "small_font": 15
+        }
+        self.fonts = {font_name: pygame.font.SysFont(font_name, size) for font_name, size in font_sizes.items()}
+        print(self.fonts)
         self.big_font = pygame.font.SysFont(font_name, 40)
         self.normal_font = pygame.font.SysFont(font_name, 30)
         self.intermediate_font = pygame.font.SysFont(font_name, 25)
@@ -40,13 +49,13 @@ class LogIn:
                           for text in self.texts]
         
         # submit button
-        submit_button_offset = 10
-        self.submit_button_info: List[tuple[int]] = [(self.main_box_position[0] + submit_button_offset, self.main_box_position[1] + self.dimensions[1] - 70), (self.dimensions[0] - submit_button_offset*2, 50)]
-        self.submit_button_rect = pygame.Rect(self.submit_button_info[0], self.submit_button_info[1])
-        self.submit_button_txt_surf = self.intermediate_font.render("Log in", True, WHITE)
-        self.submit_button_is_hovered = False
-        self.submit_button_is_pressed = False
-        self.submit_button_can_press = True
+        submit_btn_offset = 10
+        self.submit_btn_info: List[tuple[int]] = [(self.main_box_position[0] + submit_btn_offset, self.main_box_position[1] + self.dimensions[1] - 70), (self.dimensions[0] - submit_btn_offset*2, 50)]
+        self.submit_btn_rect = pygame.Rect(self.submit_btn_info[0], self.submit_btn_info[1])
+        self.submit_btn_txt_surf = self.intermediate_font.render("Log in", True, WHITE)
+        self.submit_btn_hovered = False
+        self.submit_btn_pressed = False
+        self.submit_btn_can_press = True
 
         # Checkbox
         self.checkbox_rect = pygame.Rect(0,0,0,0)
@@ -60,10 +69,10 @@ class LogIn:
 
         # * json file setup
         try:
-            with open("code/json/users.json") as users_file:
+            with open("code/json_files/users.json") as users_file:
                 self.users = json.load(users_file)["users"]
         except:
-            with open("code/json/users.json", "w") as users_file:
+            with open("code/json_files/users.json", "w") as users_file:
                 pass
 
     def check_users(self) -> None:
@@ -71,7 +80,7 @@ class LogIn:
 
         for user in self.users:
            if user[0].lower() == self.username.lower():
-               # I've this line of code so if you've written the code minimized the username is capitalized it gives the real username
+               # Normalize username format if different
                self.username = user[0]
                requirements[0] = True
            if user[1] == self.password:
@@ -121,17 +130,17 @@ class LogIn:
 
         """
         # Button
-        submit_button_rect = (self.submit_button_rect.x, self.submit_button_info[0][1]+5)
-        pygame.draw.rect(self.display_surface, DARKER_BLUISH, [submit_button_rect, self.submit_button_rect.size], 0, 5)
+        submit_btn_rect = (self.submit_btn_rect.x, self.submit_btn_info[0][1]+5)
+        pygame.draw.rect(self.display_surface, DARKER_BLUISH, [submit_btn_rect, self.submit_btn_rect.size], 0, 5)
 
-        if self.submit_button_is_hovered:
-            pygame.draw.rect(self.display_surface, DARK_BLUE, self.submit_button_rect, 0, 5)
+        if self.submit_btn_hovered:
+            pygame.draw.rect(self.display_surface, DARK_BLUE, self.submit_btn_rect, 0, 5)
         else:
-            pygame.draw.rect(self.display_surface, BLUISH, self.submit_button_rect, 0, 5)
+            pygame.draw.rect(self.display_surface, BLUISH, self.submit_btn_rect, 0, 5)
 
         # Text
         text_offset = 5
-        self.display_surface.blit(self.submit_button_txt_surf, (self.submit_button_rect.x  + self.submit_button_rect.w//2 - self.submit_button_txt_surf.get_width()/2, self.submit_button_rect.y + self.submit_button_rect.h//2 - self.submit_button_txt_surf.get_height()/2 + text_offset))
+        self.display_surface.blit(self.submit_btn_txt_surf, (self.submit_btn_rect.x  + self.submit_btn_rect.w//2 - self.submit_btn_txt_surf.get_width()/2, self.submit_btn_rect.y + self.submit_btn_rect.h//2 - self.submit_btn_txt_surf.get_height()/2 + text_offset))
 
     def draws_the_output_text(self) -> None:
         """Draws the wrong input text.

@@ -5,7 +5,7 @@ import pygame, pygame_gui
 import sys, ctypes
 
 # Custom-made libraries
-from settings import *
+from app_engine.settings import *
 
 class HandleEvents():
     def __init__(self, manager, current_screen, hwnd, object_ids, title_bar, log_in_screen, main_screen) -> None:
@@ -52,9 +52,9 @@ class HandleEvents():
         if event.button == 1:
             if self.title_bar.title_bar_rect.collidepoint(event.pos):
                 self.title_bar_is_dragging = True
-            if self.log_in_screen.submit_button_rect.collidepoint(event.pos) and self.log_in_screen.submit_button_can_press:
-                self.log_in_screen.submit_button_rect.y = self.log_in_screen.submit_button_info[0][1] + 5
-                self.log_in_screen.submit_button_is_pressed = True
+            if self.log_in_screen.submit_btn_rect.collidepoint(event.pos) and self.log_in_screen.submit_btn_can_press:
+                self.log_in_screen.submit_btn_rect.y = self.log_in_screen.submit_btn_info[0][1] + 5
+                self.log_in_screen.submit_btn_pressed = True
         
         # Chekcs if the checkbox is clicked
         if self.log_in_screen.checkbox_rect.collidepoint(event.pos):
@@ -66,15 +66,15 @@ class HandleEvents():
         if event.button == 1:
             self.title_bar_is_dragging = False
 
-            if self.log_in_screen.submit_button_is_pressed:
-                self.log_in_screen.submit_button_is_pressed = False
-                self.log_in_screen.submit_button_rect.y = self.log_in_screen.submit_button_info[0][1]
+            if self.log_in_screen.submit_btn_pressed:
+                self.log_in_screen.submit_btn_pressed = False
+                self.log_in_screen.submit_btn_rect.y = self.log_in_screen.submit_btn_info[0][1]
 
                 if self.log_in_screen.username and self.log_in_screen.password and self.current_screen == "log_in_screen":
                     self.log_in_screen.check_users()
 
                     if not self.log_in_screen.unidentified_user and self.log_in_screen.checkbox_clicked % 2:
-                        self.log_in_screen.submit_button_can_press = False
+                        self.log_in_screen.submit_btn_can_press = False
                         self.main_screen.username = self.log_in_screen.username
                         self.app.change_screen("main_screen")
 
@@ -89,7 +89,7 @@ class HandleEvents():
             ctypes.windll.user32.ReleaseCapture()
             ctypes.windll.user32.SendMessageW(self.hwnd, 0xA1, 0x2, 0)
         
-        self.log_in_screen.submit_button_is_hovered = True if self.log_in_screen.submit_button_rect.collidepoint(event.pos) else False
+        self.log_in_screen.submit_btn_hovered = True if self.log_in_screen.submit_btn_rect.collidepoint(event.pos) else False
     
     def handle_key_down(self, event) -> None:
         if event.key == pygame.K_TAB and self.current_screen == "main_screen":

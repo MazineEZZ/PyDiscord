@@ -2,8 +2,8 @@
 import pygame, pygame_gui, time
 
 # Custom-made libraries
-from settings import SIZE_C
-from main_screen_interface import *
+from app_engine.settings import SIZE_C
+from .main_screen_interface import *
 
 class MainScreen:
     def __init__(self, manager: pygame_gui.ui_manager.UIManager) -> None:

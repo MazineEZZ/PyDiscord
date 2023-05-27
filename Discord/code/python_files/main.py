@@ -8,11 +8,13 @@ import sys, os, ctypes, subprocess
 
 # Custom-made libraries
 from pygame_gui.elements import UITextEntryLine
-from settings import *
-from handle_events import HandleEvents
-from log_in_screen import LogIn
-from main_screen import MainScreen
-from title_bar import TitleBar
+
+from app_engine.settings import *
+from app_engine.handle_events import HandleEvents
+from app_engine.title_bar import TitleBar
+
+from log_in_screen_folder.log_in_screen import LogIn
+from main_screen_folder.main_screen import MainScreen
 
 
 class App():
@@ -56,6 +58,7 @@ class App():
             - On Linux, this method requires the necessary dependencies to be installed for the 'xdotool' command to work.
 
         """
+        
         user32 = ctypes.windll.user32
         screen_width = user32.GetSystemMetrics(0)
         screen_height = user32.GetSystemMetrics(1)
@@ -86,7 +89,7 @@ class App():
         self.screen = pygame.display.set_mode((window_size["width"], window_size["height"]), flags=self.screen_flag, vsync=self.vsync)
         self.change_window_position(window_size)
 
-    def change_screen(self, screen_name) -> None:
+    def change_screen(self, screen_name: str) -> None:
         self.count += 1
         self.current_screen = screen_name
         self.change_screen_info()
@@ -98,18 +101,23 @@ class App():
         pygame.display.set_caption("Discord")
         
         # * General screen setup
+        # Screen setup
         self.screen_size = SIZE_L if self.current_screen == "log_in_screen" else SIZE_C
         self.change_window_info(self.screen_size)
+        self.clock = pygame.time.Clock()
 
+        # Screen's title bar setup
+        title_bar_icon_path = "assets/graphics/title_bar_icon.png"
         title_bar_text = "Log in to Discord" if  self.current_screen == "log_in_screen" else "Discord"
         self.title_bar = TitleBar(
             self.screen_size,
             text=title_bar_text,
-            icon=pygame.image.load("assets/graphics/title_bar_icon.png").convert_alpha())
+            icon=pygame.image.load(title_bar_icon_path).convert_alpha())
 
+        # Manager setup (pygame_gui)
+        manager_theme_path = "code/json_files/theme.json"
         self.manager = pygame_gui.UIManager((self.screen_size["width"], self.screen_size["height"]))
-        self.manager.get_theme().load_theme("code/json/theme.json")
-        self.clock = pygame.time.Clock()
+        self.manager.get_theme().load_theme(manager_theme_path)
 
         # * Screens setup
         if self.count == 0:
@@ -138,17 +146,15 @@ class App():
             self.main_screen.text_input.kill()
             self.log_in_screen.create_all_text_inputs() 
 
+        # Initialize the event handler module
         self.handle_events = HandleEvents(self.manager, self.current_screen, self.hwnd, self.object_ids, self.title_bar, self.log_in_screen, self.main_screen)
 
-    def update_and_draw_manager(self, dt):
+    def update_gui(self, dt: float):
         self.manager.update(dt)
         self.manager.draw_ui(self.screen)
 
     def main(self, app) -> None:
         while True:
-            self.main_screen.redraw_messagebox(self.update_message_time)
-
-            # Get delta
             dt = self.clock.tick(FPS)/1000
 
             for event in pygame.event.get():
@@ -156,16 +162,19 @@ class App():
                     pygame.quit()
                     sys.exit()
 
+                # Event handler module
                 self.handle_events.handle_event(event, app)
             # * App logic
             if self.current_screen == "main_screen":
+                self.main_screen.redraw_messagebox(self.update_message_time)
+
                 # Updating section
                 self.main_screen.update(self.draw)
 
                 # Drawing section
                 self.main_screen.draw(self.draw)
 
-                self.update_and_draw_manager(dt)
+                self.update_gui(dt)
 
             elif self.current_screen == "log_in_screen":
                 # Updating section
@@ -174,7 +183,7 @@ class App():
                 # Drawing section
                 self.log_in_screen.draw()
 
-                self.update_and_draw_manager(dt)
+                self.update_gui(dt)
 
             # External section
             self.title_bar.draw()

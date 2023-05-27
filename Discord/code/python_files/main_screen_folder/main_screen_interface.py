@@ -4,7 +4,7 @@ from PIL import Image
 from typing import Sequence
 
 # Custom-made libraries
-from settings import *
+from app_engine.settings import *
 
 class MessageBox:
     def __init__(self, pos: Sequence[int], size: Sequence[int], picture_path: str, name: str, text: str, time_sent_at: str) -> None:

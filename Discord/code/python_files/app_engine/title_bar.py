@@ -3,7 +3,7 @@ import pygame
 from typing import Sequence
 
 # Custom-made libraries
-from settings import *
+from app_engine.settings import *
 
 class TitleBar:
     def __init__(self, size: Sequence[int], text: str, icon: pygame.surface.Surface) -> None:
