@@ -16,6 +16,7 @@ class MainScreen:
         self.picture_path = "assets/graphics/icon.png"
 
         self.message_list = []
+        self.message_count = 0
         self.object_ids = ["main"]
 
         self.texts = []
@@ -85,7 +86,8 @@ class MainScreen:
         Note:
             - This func arranges messages from old to recent.
         """
-        if self.texts:
+        if self.texts and self.message_count % 2 == 1:
+            self.message_count -= 1
             for i, text in enumerate(self.texts):
                 self.message_list.append(MessageBox(
                    pos=(75, self.HEIGHT-65*(i+2)),

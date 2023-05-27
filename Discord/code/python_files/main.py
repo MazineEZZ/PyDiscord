@@ -166,7 +166,9 @@ class App():
                 self.handle_events.handle_event(event, app)
             # * App logic
             if self.current_screen == "main_screen":
-                self.main_screen.redraw_messagebox(self.update_message_time)
+                # self.main_screen.redraw_messagebox(self.update_message_time)
+                self.screen.fill(DARKER_GRAY_BG)
+                print(self.main_screen.message_list)
 
                 # Updating section
                 self.main_screen.update(self.draw)

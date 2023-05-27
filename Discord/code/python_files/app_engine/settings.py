@@ -4,8 +4,18 @@ SIZE_C = {"width": 1020, "height": 680}  # ! Chat screen
 SIZE_L = {"width": 1020, "height": 680}  # ! Log-in screen
 # SIZE_S = {"width": 1020, "height": 680}  # ! Sign-in screen
 FPS = 60
-VSYNC_ENABLED = False
+VSYNC_ENABLED = True
 TRANSITION_DURATION = 0.2
+
+# * Fonts
+FONT_NAME = "bahnschrift"
+FONT_SIZES = {
+            "big": 40,
+            "normal": 30,
+            "intermediate": 25,
+            "medium": 20,
+            "small": 15
+        }
 
 # * Colors
 WHITE = "#DCDDDE"

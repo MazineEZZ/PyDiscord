@@ -11,17 +11,14 @@ class MessageBox:
         # Pygame Setup
         self.display_surface = pygame.display.get_surface()
 
-        font_name = "bahnschrift"
-        self.big_font = pygame.font.SysFont(font_name, 25)
-        self.medium_font = pygame.font.SysFont(font_name, 20)
-        self.small_font = pygame.font.SysFont(font_name, 15)
+        self.fonts = {font_name: pygame.font.SysFont(FONT_NAME, size) for font_name, size in FONT_SIZES.items()}
 
         # General setup
         self.rect = pygame.Rect(pos[0], pos[1], size[0], size[1])
         
-        self.name = self.big_font.render(name, True, WHITE)
-        self.text = self.medium_font.render(text, True, WHITISH)
-        self.time_text = self.small_font.render(f"sent at {time_sent_at}", True, LIGHT_GRAY)
+        self.name = self.fonts["intermediate"].render(name, True, WHITE)
+        self.text = self.fonts["medium"].render(text, True, WHITISH)
+        self.time_text = self.fonts["small"].render(f"sent at {time_sent_at}", True, LIGHT_GRAY)
 
         # Profile picture setup
         pfp_size = (60, 60)
@@ -62,12 +59,12 @@ class MessageBox:
             radius=int(size[0]/2))
     
         # Resize the profile picture using smoothscale for anti-aliasing
-        pfp_smooth = pygame.transform.smoothscale(pfp, (size[0], size[1]))
+        smooth_pfp = pygame.transform.smoothscale(pfp, (size[0], size[1]))
     
         # Blit the smoothed profile picture onto the circular surface
-        self.masked_img = pygame.Surface(size, pygame.SRCALPHA)
-        self.masked_img.blit(pfp_smooth, (0, 0))
-        self.masked_img.blit(mask, (0, 0), special_flags=pygame.BLEND_RGBA_MULT)
+        self.profile_picture = pygame.Surface(size, pygame.SRCALPHA)
+        self.profile_picture.blit(smooth_pfp, (0, 0))
+        self.profile_picture.blit(mask, (0, 0), special_flags=pygame.BLEND_RGBA_MULT)
 
     def draw(self) -> None:
         # Create a nice outline at the bottom of each messagebox
@@ -77,7 +74,7 @@ class MessageBox:
                         self.rect.x, self.rect.y, self.rect.w, self.rect.h-2], 0, 5)
 
         # * Bliting onto the screen
-        self.display_surface.blit(self.masked_img, (self.rect.x - 65, self.rect.y))
+        self.display_surface.blit(self.profile_picture, (self.rect.x - 65, self.rect.y))
 
         # Blit the name
         self.display_surface.blit(self.name, (self.rect.x + 5, self.rect.y + 7.5))

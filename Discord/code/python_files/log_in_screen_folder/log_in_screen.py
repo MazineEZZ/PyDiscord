@@ -10,27 +10,13 @@ class LogIn:
         # Pygame setup
         self.display_surface = pygame.display.get_surface()
 
-        font_name = "bahnschrift"
-        font_sizes = {
-            "big_font": 40,
-            "normal_font": 30,
-            "intermediate_font": 25,
-            "medium_font": 20,
-            "small_font": 15
-        }
-        self.fonts = {font_name: pygame.font.SysFont(font_name, size) for font_name, size in font_sizes.items()}
-        print(self.fonts)
-        self.big_font = pygame.font.SysFont(font_name, 40)
-        self.normal_font = pygame.font.SysFont(font_name, 30)
-        self.intermediate_font = pygame.font.SysFont(font_name, 25)
-        self.medium_font = pygame.font.SysFont(font_name, 20)
-        self.small_font = pygame.font.SysFont(font_name, 15)
-        self.manager = manager
+        self.fonts = {font_name: pygame.font.SysFont(FONT_NAME, size) for font_name, size in FONT_SIZES.items()}
 
         # General setup
         self.screen_size = self.WIDTH, self.HEIGHT = (SIZE_L["width"], SIZE_L["height"])
         self.dimensions = (400, self.HEIGHT-240)
         self.main_box_position = (self.WIDTH//2-self.dimensions[0]//2, 110)
+        self.manager = manager
 
         self.animated_bg = pygame.image.load(background_path).convert_alpha()
         self.animated_bg = pygame.transform.smoothscale(self.animated_bg, pygame.math.Vector2(self.animated_bg.get_size())*0.35)
@@ -43,16 +29,16 @@ class LogIn:
         self.texts = [["Welcome Back!", "B", (self.WIDTH//2, self.main_box_position[1] + 20)],
                       [self.object_ids[0].upper(), "S", (self.main_box_position[0] + 50, self.main_box_position[1] + 165/2)],
                       [self.object_ids[1].upper(), "S", (self.main_box_position[0] + 50, self.main_box_position[1] + 182)],]
-        self.text_list = [(self.big_font.render(text[0], True, WHITE), text[2]) if text[1] == "B" else
-                          (self.normal_font.render(text[0], True, WHITE), text[2]) if text[1] == "N" else
-                          (self.small_font.render(text[0], True, GRAY), text[2]) if text[1] == "S" else 0
+        self.text_list = [(self.fonts["big"].render(text[0], True, WHITE), text[2]) if text[1] == "B" else
+                          (self.fonts["normal"].render(text[0], True, WHITE), text[2]) if text[1] == "N" else
+                          (self.fonts["small"].render(text[0], True, GRAY), text[2]) if text[1] == "S" else 0
                           for text in self.texts]
         
-        # submit button
+        # Submit button
         submit_btn_offset = 10
         self.submit_btn_info: List[tuple[int]] = [(self.main_box_position[0] + submit_btn_offset, self.main_box_position[1] + self.dimensions[1] - 70), (self.dimensions[0] - submit_btn_offset*2, 50)]
         self.submit_btn_rect = pygame.Rect(self.submit_btn_info[0], self.submit_btn_info[1])
-        self.submit_btn_txt_surf = self.intermediate_font.render("Log in", True, WHITE)
+        self.submit_btn_txt_surf = self.fonts["intermediate"].render("Log in", True, WHITE)
         self.submit_btn_hovered = False
         self.submit_btn_pressed = False
         self.submit_btn_can_press = True
@@ -176,12 +162,12 @@ class LogIn:
             text_color_info = ("Everything is looking good.", GREEN)
 
 
-        output_text = self.small_font.render(text_color_info[0], True, text_color_info[1])
+        output_text = self.fonts["small"].render(text_color_info[0], True, text_color_info[1])
 
         self.display_surface.blit(output_text, (self.main_box_position[0] + 15, self.main_box_position[1]+ self.dimensions[1]/1.2 - offset))
 
     def create_check_box(self) -> None:
-        checkbox_text = self.medium_font.render("Please confirm your human identity.", True, WHITISH)
+        checkbox_text = self.fonts["medium"].render("Please confirm your human identity.", True, WHITISH)
 
         self.checkbox_rect = pygame.Rect(
             (self.main_box_position[0] + 15, self.main_box_position[1] + self.dimensions[1]/1.45 - 30), 
