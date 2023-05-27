@@ -103,11 +103,8 @@ class HandleEvents():
         for object_id in self.object_ids:
             if self.current_screen == "main_screen":
                 if event.type == pygame_gui.UI_TEXT_ENTRY_FINISHED and event.ui_object_id == f"#{object_id}_text_entry":
-                    self.app.draw = True
                     self.main_screen.message_count += 1
                     self.main_screen.make_new_message_box(event.text)
-                else:
-                    self.app.draw = True
             if self.current_screen == "log_in_screen":
                 if event.type == pygame_gui.UI_TEXT_ENTRY_CHANGED and event.ui_object_id == f"#{object_id}_text_entry":
                     self.handle_ui_text_entry_changed_log_in_screen(object_id, event)

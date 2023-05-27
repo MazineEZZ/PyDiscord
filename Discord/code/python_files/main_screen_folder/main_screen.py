@@ -23,18 +23,6 @@ class MainScreen:
         self.create_text_input()
 
         self.username = ""
-
-    def redraw_messagebox(self, update_message_time: int) -> None:
-        """redraw all of the messagebox when switching to the main screen.
-
-
-        Args:
-            update_message_time (int): whenever the function is called this variable starts with zero
-        """
-        if self.message_list and not update_message_time:
-            update_message_time = pygame.time.get_ticks()
-            if pygame.time.get_ticks() - update_message_time <= 10:
-                self.draw(True)
     
     def make_new_message_box(self, text: str) -> None:
         """
@@ -97,11 +85,9 @@ class MainScreen:
                    text=text[0],
                    time_sent_at=text[1]))
 
-    def update(self, draw: bool) -> None:
-        if draw:
-            self.arrange_and_create_messages()
+    def update(self) -> None:
+        self.arrange_and_create_messages()
 
-    def draw(self, draw: bool) -> None:
-        if draw:
-            for message_box in self.message_list:
-                message_box.draw()
+    def draw(self) -> None:
+        for message_box in self.message_list:
+            message_box.draw()

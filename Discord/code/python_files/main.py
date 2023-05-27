@@ -36,8 +36,6 @@ class App():
 
         self.update_message_time = 0
 
-        self.draw = False
-
         self.hovering = False
         self.hover_start_time = 0.0
         self.fade_out_start_time = 0.0
@@ -166,15 +164,13 @@ class App():
                 self.handle_events.handle_event(event, app)
             # * App logic
             if self.current_screen == "main_screen":
-                # self.main_screen.redraw_messagebox(self.update_message_time)
                 self.screen.fill(DARKER_GRAY_BG)
-                print(self.main_screen.message_list)
 
                 # Updating section
-                self.main_screen.update(self.draw)
+                self.main_screen.update()
 
                 # Drawing section
-                self.main_screen.draw(self.draw)
+                self.main_screen.draw()
 
                 self.update_gui(dt)
 
