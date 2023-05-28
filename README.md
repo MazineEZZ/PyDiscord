@@ -23,7 +23,7 @@ In order to run this application you of course need python since it is based on 
 
 Once you are in the application, you should see this interface:
 
-![Log in screen](https://github.com/mazineZ/Discord-remake/assets/103586564/eb90cc42-4e94-4087-bf78-b19f17db84ec)
+![Log in screen](https://github.com/MazineZ/PyDiscord/assets/103586564/aa062660-7c31-412e-8f1a-a898af17a2d6)
 
 If you fill in the correct password and username, you should be redirected to this screen.
 
