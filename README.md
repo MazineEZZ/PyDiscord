@@ -17,7 +17,22 @@ PyDiscord is a Python application built with the Pygame library, aimed at recrea
 
 ## Installation
 
-In order to run this application you of course need python since it is based on that language, and you also need some dependencies. I've included a file that simplifies this process, so feel free to download the file.
+To run this application, you'll need Python installed on your system. Additionally, you need to install the required dependencies.
+
+Follow these steps:
+
+- Install Python from python.org.
+- Open your terminal or command prompt.
+- Navigate to the application's directory.
+- Run the command below to install the dependencies:
+
+```console
+pip install -r requirements.txt
+```
+
+This will automatically install the necessary dependencies.
+
+If you encounter any issues during installation, feel free to [Contact](#contact) me for assitance.
 
 ## Usage
 
