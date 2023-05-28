@@ -66,6 +66,24 @@ class HandleEvents():
             if self.log_in_screen.unidentified_user:
                 self.log_in_screen.unidentified_user = False
 
+        # Handles scrolling
+        if event.button == 5 and self.chat_screen.all_collided_messageboxes:
+            if self.chat_screen.screen_offset >= 0:
+                self.chat_screen.screen_offset -= self.chat_screen.scrolling_speed
+            else:
+                self.chat_screen.screen_offset = -self.chat_screen.scrolling_speed
+
+        elif event.button == 4 and self.chat_screen.all_collided_messageboxes:
+            num = 0
+            for _ in range(len(self.chat_screen.all_collided_messageboxes)):
+                num += 60
+            num -= self.chat_screen.screen_offset/self.chat_screen.scrolling_speed
+
+            if self.chat_screen.screen_offset <= num:
+                self.chat_screen.screen_offset += self.chat_screen.scrolling_speed
+            else:
+                self.chat_screen.screen_offset = num + self.chat_screen.scrolling_speed
+
     def handle_mouse_button_up(self, event) -> None:
         if event.button == 1:
             self.title_bar_is_dragging = False

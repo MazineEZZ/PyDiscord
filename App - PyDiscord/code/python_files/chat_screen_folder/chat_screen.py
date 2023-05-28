@@ -4,8 +4,8 @@ import pygame_gui
 import time
 
 # Custom-made libraries
-from app_engine.settings import SIZE_C
-from .chat_screen_interface import *
+from app_engine.settings import *
+from .chat_screen_interface import MessageBox
 
 
 class ChatScreen:
@@ -22,6 +22,9 @@ class ChatScreen:
         self.message_list = []
         self.message_count = 0
         self.object_ids = ["main"]
+        self.screen_offset = 0
+        self.all_collided_messageboxes = []
+        self.scrolling_speed = 10
 
         self.texts = []
         self.create_text_input()
@@ -89,11 +92,22 @@ class ChatScreen:
                     text=text[0],
                     time_sent_at=text[1]))
 
+    def handle_scrolling(self) -> None:
+        for message_box in self.message_list:
+            message_box.update_screen_offset(self.screen_offset)
+
+            if message_box.handle_collision():
+                self.all_collided_messageboxes.append(message_box)
+
     def update(self) -> None:
         self.arrange_and_create_messages()
+        self.handle_scrolling()
 
     def draw(self) -> None:
         self.display_surface.fill(DARKER_GRAY_BG)
 
         for message_box in self.message_list:
             message_box.draw()
+
+        pygame.draw.rect(self.display_surface, DARKER_GRAY_BG, [
+            0, self.text_input.rect.y - 5, self.WIDTH, self.HEIGHT])

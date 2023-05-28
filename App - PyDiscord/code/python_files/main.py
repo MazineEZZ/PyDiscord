@@ -36,7 +36,7 @@ class App():
 
         self.screens = ["log_in_screen", "chat_screen"]
         self.count = 0
-        self.current_screen = self.screens[0]
+        self.current_screen = self.screens[1]
 
         self.update_message_time = 0
 
@@ -190,7 +190,7 @@ class App():
 
                 self.update_gui(dt)
 
-                self.log_in_screen.draw_password_hider(False)
+                self.log_in_screen.draw_password_hider()
 
             # External section
             self.title_bar.draw()

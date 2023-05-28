@@ -211,21 +211,23 @@ class LogInScreen:
     def draw_password_hider(self, hide: bool = False) -> None:
         # Text
         asterics_text = '*' * len(self.password)
-        asterics_text = self.fonts["intermediate"].render(
+        if len(asterics_text) >= 33:
+            asterics_text = asterics_text[:34]
+        asterics_text_rendered = self.fonts["intermediate"].render(
             asterics_text, True, WHITISH)
 
         # Rect
         rect_offset = 5
         rect = pygame.Rect(self.text_inputs[1].rect.x+rect_offset/2,
                            self.text_inputs[1].rect.y+rect_offset/2,
-                           self.text_inputs[1].rect.w-rect_offset,
+                           self.text_inputs[1].rect.w - rect_offset,
                            self.text_inputs[1].rect.h-rect_offset)
 
         # Draw
         if self.password and not hide:
             pygame.draw.rect(self.display_surface, DARKER_GRAY, rect=rect)
             self.display_surface.blit(
-                asterics_text, (rect.x + 2, rect.y + asterics_text.get_height()//2))
+                asterics_text_rendered, (rect.x + 2, rect.y + asterics_text_rendered.get_height()//2))
 
     def draw(self) -> None:
         # * Background
