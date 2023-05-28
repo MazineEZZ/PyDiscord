@@ -50,10 +50,8 @@ If you fill in the correct password and username, you should be redirected to th
 
 Feel free to connect with me through the following channels:
 
-🌟 Instagram: https://www.instagram.com/maz.almansur/
-
-🔔 Discord: Mazine II#1561
-
-📧 Email: mazinewolf2007@gmail.com
+- 🌟 Instagram: https://www.instagram.com/maz.almansur/
+- 🔔 Discord: Mazine II#1561
+- 📧 Email: mazinewolf2007@gmail.com
 
 I'm always open to collaboration, feedback, and interesting conversations. Don't hesitate to reach out—I look forward to hearing from you!
