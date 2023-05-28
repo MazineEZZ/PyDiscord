@@ -1,18 +1,22 @@
 # Python libraries
-import pygame, pygame_gui, time
+import pygame
+import pygame_gui
+import time
 
 # Custom-made libraries
 from app_engine.settings import SIZE_C
-from .main_screen_interface import *
+from .chat_screen_interface import *
 
-class MainScreen:
+
+class ChatScreen:
     def __init__(self, manager: pygame_gui.ui_manager.UIManager) -> None:
         # Pygame setup
         self.display_surface = pygame.display.get_surface()
         self.manager = manager
 
         # General setup
-        self.screen_size = self.WIDTH, self.HEIGHT = (SIZE_C["width"], SIZE_C["height"])
+        self.screen_size = self.WIDTH, self.HEIGHT = (
+            SIZE_C["width"], SIZE_C["height"])
         self.picture_path = "assets/graphics/icon.png"
 
         self.message_list = []
@@ -23,7 +27,7 @@ class MainScreen:
         self.create_text_input()
 
         self.username = ""
-    
+
     def make_new_message_box(self, text: str) -> None:
         """
         Makes a new messagebox whenever a message is sent.
@@ -51,10 +55,10 @@ class MainScreen:
             self.text_input.kill()
             self.create_text_input()
             self.text_input.focus()
-    
+
     def update_manager(self, manager: pygame_gui.ui_manager.UIManager) -> None:
         self.manager = manager
-    
+
     def create_text_input(self) -> None:
         """
         Creates a new text input whenever a text is sent.
@@ -64,13 +68,13 @@ class MainScreen:
             placeholder_text="Message...",
             manager=self.manager,
             object_id=f"#{self.object_ids[0]}_text_entry"
-            )
+        )
 
     def arrange_and_create_messages(self) -> None:
         """
         Arrange messages while also creating message_boxes.
-        
-        
+
+
         Note:
             - This func arranges messages from old to recent.
         """
@@ -78,16 +82,18 @@ class MainScreen:
             self.message_count -= 1
             for i, text in enumerate(self.texts):
                 self.message_list.append(MessageBox(
-                   pos=(75, self.HEIGHT-65*(i+2)),
-                   size=(self.WIDTH-85, 60), 
-                   picture_path=self.picture_path,
-                   name=self.username, 
-                   text=text[0],
-                   time_sent_at=text[1]))
+                    pos=(75, self.HEIGHT-65*(i+2)),
+                    size=(self.WIDTH-85, 60),
+                    picture_path=self.picture_path,
+                    name=self.username,
+                    text=text[0],
+                    time_sent_at=text[1]))
 
     def update(self) -> None:
         self.arrange_and_create_messages()
 
     def draw(self) -> None:
+        self.display_surface.fill(DARKER_GRAY_BG)
+
         for message_box in self.message_list:
             message_box.draw()

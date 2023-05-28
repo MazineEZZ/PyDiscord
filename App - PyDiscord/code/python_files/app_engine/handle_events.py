@@ -1,14 +1,17 @@
 # Python Libraries
-import pygame, pygame_gui
+import pygame
+import pygame_gui
 
 # System Libraries
-import sys, ctypes
+import sys
+import ctypes
 
 # Custom-made libraries
 from app_engine.settings import *
 
+
 class HandleEvents():
-    def __init__(self, manager, current_screen, hwnd, object_ids, title_bar, log_in_screen, main_screen) -> None:
+    def __init__(self, manager, current_screen, hwnd, object_ids, title_bar, log_in_screen, chat_screen) -> None:
         # General setu
         self.display_surface = pygame.display.get_surface()
 
@@ -18,7 +21,7 @@ class HandleEvents():
         self.object_ids = object_ids
         self.title_bar = title_bar
         self.log_in_screen = log_in_screen
-        self.main_screen = main_screen
+        self.chat_screen = chat_screen
 
         self.title_bar_is_dragging = False
         self.switch_focus = 1
@@ -53,9 +56,10 @@ class HandleEvents():
             if self.title_bar.title_bar_rect.collidepoint(event.pos):
                 self.title_bar_is_dragging = True
             if self.log_in_screen.submit_btn_rect.collidepoint(event.pos) and self.log_in_screen.submit_btn_can_press:
-                self.log_in_screen.submit_btn_rect.y = self.log_in_screen.submit_btn_info[0][1] + 5
+                self.log_in_screen.submit_btn_rect.y = self.log_in_screen.submit_btn_info[
+                    0][1] + 5
                 self.log_in_screen.submit_btn_pressed = True
-        
+
         # Chekcs if the checkbox is clicked
         if self.log_in_screen.checkbox_rect.collidepoint(event.pos):
             self.log_in_screen.checkbox_clicked += 1
@@ -75,8 +79,8 @@ class HandleEvents():
 
                     if not self.log_in_screen.unidentified_user and self.log_in_screen.checkbox_clicked % 2:
                         self.log_in_screen.submit_btn_can_press = False
-                        self.main_screen.username = self.log_in_screen.username
-                        self.app.change_screen("main_screen")
+                        self.chat_screen.username = self.log_in_screen.username
+                        self.app.change_screen("chat_screen")
 
                 else:
                     self.log_in_screen.unidentified_user = True
@@ -88,26 +92,29 @@ class HandleEvents():
             # Move the window with the mouse pos
             ctypes.windll.user32.ReleaseCapture()
             ctypes.windll.user32.SendMessageW(self.hwnd, 0xA1, 0x2, 0)
-        
-        self.log_in_screen.submit_btn_hovered = True if self.log_in_screen.submit_btn_rect.collidepoint(event.pos) else False
-    
+
+        self.log_in_screen.submit_btn_hovered = True if self.log_in_screen.submit_btn_rect.collidepoint(
+            event.pos) else False
+
     def handle_key_down(self, event) -> None:
-        if event.key == pygame.K_TAB and self.current_screen == "main_screen":
-            self.manager.set_focus_set(self.main_screen.text_input)
+        if event.key == pygame.K_TAB and self.current_screen == "chat_screen":
+            self.manager.set_focus_set(self.chat_screen.text_input)
 
         if event.key == pygame.K_TAB and self.current_screen == "log_in_screen":
             self.switch_focus = (self.switch_focus + 1) % 2
-            self.manager.set_focus_set(self.log_in_screen.text_inputs[self.switch_focus])
+            self.manager.set_focus_set(
+                self.log_in_screen.text_inputs[self.switch_focus])
 
     def handle_pygame_guis_event(self, event) -> None:
         for object_id in self.object_ids:
-            if self.current_screen == "main_screen":
+            if self.current_screen == "chat_screen":
                 if event.type == pygame_gui.UI_TEXT_ENTRY_FINISHED and event.ui_object_id == f"#{object_id}_text_entry":
-                    self.main_screen.message_count += 1
-                    self.main_screen.make_new_message_box(event.text)
+                    self.chat_screen.message_count += 1
+                    self.chat_screen.make_new_message_box(event.text)
             if self.current_screen == "log_in_screen":
                 if event.type == pygame_gui.UI_TEXT_ENTRY_CHANGED and event.ui_object_id == f"#{object_id}_text_entry":
-                    self.handle_ui_text_entry_changed_log_in_screen(object_id, event)
+                    self.handle_ui_text_entry_changed_log_in_screen(
+                        object_id, event)
 
     def handle_ui_text_entry_changed_log_in_screen(self, object_id, event) -> None:
         if self.log_in_screen.unidentified_user:
@@ -123,4 +130,3 @@ class HandleEvents():
                 self.log_in_screen.incorrect_password = True
             else:
                 self.log_in_screen.incorrect_password = False
-

@@ -10,12 +10,12 @@ TRANSITION_DURATION = 0.2
 # * Fonts
 FONT_NAME = "bahnschrift"
 FONT_SIZES = {
-            "big": 40,
-            "normal": 30,
-            "intermediate": 25,
-            "medium": 20,
-            "small": 15
-        }
+    "big": 40,
+    "normal": 30,
+    "intermediate": 25,
+    "medium": 20,
+    "small": 15
+}
 
 # * Colors
 WHITE = "#DCDDDE"
