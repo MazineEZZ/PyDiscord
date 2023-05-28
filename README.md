@@ -1,6 +1,6 @@
 # PyDiscord
 
-PyDiscord is a Python application built with the Pygame library, aimed at recreating the core functionality and user experience of the popular messaging platform Discord. It provides a familiar interface for users to communicate, collaborate, and connect with others in real-time.
+PyDiscord is a Python application built with the Pygame library, aimed at recreating the core functionality and user experience of the popular messaging platform Discord. It provides a familiar interface for users to communicate, and connect with others in real-time.
 
 ## Table of Contents
 
