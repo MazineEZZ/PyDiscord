@@ -4,7 +4,7 @@ SIZE_C = {"width": 1020, "height": 680}  # ! Chat screen
 SIZE_L = {"width": 1020, "height": 680}  # ! Log-in screen
 # SIZE_S = {"width": 1020, "height": 680}  # ! Sign-in screen
 FPS = 60
-VSYNC_ENABLED = True
+VSYNC_ENABLED = False
 TRANSITION_DURATION = 0.2
 
 # * Fonts
